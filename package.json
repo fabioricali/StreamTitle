@@ -1,0 +1,45 @@
+{
+  "name": "stream-title",
+  "version": "1.0.0",
+  "description": "Retrieve song title from shoutcast and icecast server",
+  "main": "index.js",
+  "keywords": [
+    "cover",
+    "shoutcast",
+    "icecast",
+    "metadata",
+    "song",
+    "itunes",
+    "search",
+    "album",
+    "artist",
+    "title",
+    "centova"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabioricali/StreamTitle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fabioricali/StreamTitle/issues"
+  },
+  "homepage": "https://github.com/fabioricali/StreamTitle#readme",
+  "author": "Fabio Ricali",
+  "license": "MIT",
+  "devDependencies": {
+    "coveralls": "^2.13.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "mocha-lcov-reporter": "^1.3.0"
+  },
+  "dependencies": {
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
+}
