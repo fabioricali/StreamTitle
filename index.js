@@ -78,7 +78,7 @@ function getByShoutcast(url) {
             'User-Agent': 'StreamTitle for Mozilla'
         }
     }).then(function (body) {
-        let match = (/<body>\d*,\d*,\d*,\d*,\d*,\d*,(.*)<\/body>/mi).exec(body);
+        let match = (/<body>\d*,\d*,\d*,\d*,\d*,\d*,([\s\S]*?)<\/body>/).exec(body);
         return match && match[1].length > 0 ? match[1] : '';
     });
 }
