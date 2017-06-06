@@ -1,6 +1,6 @@
 {
   "name": "stream-title",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Retrieve song title from shoutcast and icecast server",
   "main": "index.js",
   "keywords": [
