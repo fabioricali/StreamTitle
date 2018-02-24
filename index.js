@@ -8,9 +8,9 @@ const rp = require('request-promise');
  * Get song title from icecast v2.4
  * @param url
  * @param mount
- * @returns {Promise.<TResult>}
+ * @returns {PromiseLike<T> | Promise<T>}
  */
-function getByIcecast(url, mount) {
+function getFromIcecast(url, mount) {
 
     if(typeof url === 'undefined')
         throw new Error('required url');
@@ -41,9 +41,9 @@ function getByIcecast(url, mount) {
  * Get song title from shoutcast v2
  * @param url
  * @param sid
- * @returns {Promise.<TResult>}
+ * @returns {PromiseLike<T> | Promise<T>}
  */
-function getByShoutcast2(url, sid) {
+function getFromShoutcast2(url, sid) {
 
     if(typeof url === 'undefined')
         throw new Error('required url');
@@ -63,9 +63,9 @@ function getByShoutcast2(url, sid) {
 /**
  * Get song title from shoutcast v1
  * @param url
- * @returns {Promise.<TResult>}
+ * @returns {PromiseLike<T> | Promise<T>}
  */
-function getByShoutcast(url) {
+function getFromShoutcast(url) {
 
     if(typeof url === 'undefined')
         throw new Error('required url');
@@ -95,16 +95,13 @@ function streamTitle(args) {
 
     switch (args.type) {
         case 'shoutcast2':
-            return getByShoutcast2(args.url, args.sid);
-            break;
+            return getFromShoutcast2(args.url, args.sid);
 
         case 'icecast':
-            return getByIcecast(args.url, args.mount);
-            break;
+            return getFromIcecast(args.url, args.mount);
 
         case 'shoutcast':
-            return getByShoutcast(args.url);
-            break;
+            return getFromShoutcast(args.url);
     }
 
 }

@@ -7,10 +7,11 @@ const streamTitle = require('../index');
 
 const shoutcastV1Url = 'http://37.48.83.44:10008';
 const shoutcastV2Url = 'http://178.33.45.230';
-const icecastUrl = 'http://209.126.66.166:10999';
+const icecastUrl = 'http://streaming.domainepublic.net:8000';
 const wrongUrl = 'http://rica.li';
 
 describe('StreamTitle', function () {
+
     it('get from shoutcast v2', function (done) {
         streamTitle({
             url: shoutcastV2Url,
@@ -92,7 +93,7 @@ describe('StreamTitle', function () {
     it('get from icecast', function (done) {
         streamTitle({
             url: icecastUrl,
-            mount: '192.ogg',
+            mount: 'radiogibson.opus',
             type: 'icecast'
         }).then(function (data) {
             console.log(data);
