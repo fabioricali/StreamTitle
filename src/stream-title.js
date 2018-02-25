@@ -10,10 +10,10 @@ const rp = require('request-promise');
  */
 function getFromIcecast(url, mount, timeout) {
 
-    if(typeof url === 'undefined')
+    if (typeof url === 'undefined')
         throw new Error('required url');
 
-    if(typeof mount === 'undefined')
+    if (typeof mount === 'undefined')
         throw new Error('required mount');
 
     url = url + '/status-json.xsl';
@@ -24,10 +24,10 @@ function getFromIcecast(url, mount, timeout) {
     }).then(function (body) {
         let data = JSON.parse(body);
         let title = '';
-        for(let i in data['icestats']['source']){
-            if(data['icestats']['source'].hasOwnProperty(i)){
+        for (let i in data['icestats']['source']) {
+            if (data['icestats']['source'].hasOwnProperty(i)) {
                 let urlObj = u.parse(data['icestats']['source'][i]['listenurl']);
-                if(urlObj.pathname.replace('/','') === mount && data['icestats']['source'][i]['title'] ){
+                if (urlObj.pathname.replace('/', '') === mount && data['icestats']['source'][i]['title']) {
                     title = data['icestats']['source'][i]['title'];
                     break;
                 }
@@ -47,10 +47,10 @@ function getFromIcecast(url, mount, timeout) {
  */
 function getFromShoutcast2(url, sid, timeout) {
 
-    if(typeof url === 'undefined')
+    if (typeof url === 'undefined')
         throw new Error('required url');
 
-    if(typeof sid === 'undefined')
+    if (typeof sid === 'undefined')
         throw new Error('required sid');
 
     url = url + '/stats?sid=' + sid + '&json=1';
@@ -73,7 +73,7 @@ function getFromShoutcast2(url, sid, timeout) {
  */
 function getFromShoutcast(url, timeout) {
 
-    if(typeof url === 'undefined')
+    if (typeof url === 'undefined')
         throw new Error('required url');
 
     url = url + '/7.html';
@@ -97,21 +97,32 @@ function getFromShoutcast(url, timeout) {
  */
 function streamTitle(args) {
 
-    if(typeof args.type === 'undefined')
+    if (typeof args.type === 'undefined')
         throw new Error('required type');
 
-    if(typeof args.timeout !== 'number')
+    if (typeof args.timeout !== 'number')
         args.timeout = 1500;
 
     switch (args.type) {
         case 'shoutcast2': {
-            return getFromShoutcast2(args.url, args.sid, args.timeout);
+            return getFromShoutcast2(
+                args.url,
+                args.sid,
+                args.timeout
+            );
         }
         case 'icecast': {
-            return getFromIcecast(args.url, args.mount, args.timeout);
+            return getFromIcecast(
+                args.url,
+                args.mount,
+                args.timeout
+            );
         }
         case 'shoutcast': {
-            return getFromShoutcast(args.url, args.timeout);
+            return getFromShoutcast(
+                args.url,
+                args.timeout
+            );
         }
     }
 
