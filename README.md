@@ -62,6 +62,7 @@ type | string | required, server type that can be "shoutcast", "shoutcast2" or "
 url | string | required, server url
 sid | integer | required for shoutcast2, stream id
 mount | string | required for incecast, mount name
+timeout | integer | request timeout in ms, default: 1500
 
 ## License
 StreamTitle is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
