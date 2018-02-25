@@ -4,17 +4,34 @@
 const assert = require('assert');
 const request = require('request');
 const streamTitle = require('../index');
+const StaticServer = require('static-server');
 
-const shoutcastV1Url = 'http://37.48.83.44:10008';
-const shoutcastV2Url = 'http://178.33.45.230';
-const icecastUrl = 'http://streaming.domainepublic.net:8000';
+const PATH_TEXTURE = __dirname + '/texture';
+const SERVER_HOST = 'http://localhost:1337';
+
+const server = new StaticServer({
+    rootPath: PATH_TEXTURE,
+    name: 'my-http-server',
+    port: 1337
+});
+
 const wrongUrl = 'http://rica.li';
 
 describe('StreamTitle', function () {
 
+    before(function (done) {
+        server.start(function () {
+            done();
+        })
+    });
+
+    after(function () {
+        server.stop()
+    });
+
     it('get from shoutcast v2', function (done) {
         streamTitle({
-            url: shoutcastV2Url,
+            url: SERVER_HOST,
             sid: 1,
             type: 'shoutcast2'
         }).then(function (data) {
@@ -37,7 +54,7 @@ describe('StreamTitle', function () {
     it('get from shoutcast v2 without sid', function (done) {
         try {
             streamTitle({
-                url: shoutcastV2Url,
+                url: SERVER_HOST,
                 type: 'shoutcast2'
             }).then();
         } catch (e) {
@@ -68,7 +85,7 @@ describe('StreamTitle', function () {
     });
     it('get from shoutcast v1', function (done) {
         streamTitle({
-            url: shoutcastV1Url,
+            url: SERVER_HOST,
             type: 'shoutcast'
         }).then(function (data) {
             console.log(data);
@@ -92,8 +109,8 @@ describe('StreamTitle', function () {
     });
     it('get from icecast', function (done) {
         streamTitle({
-            url: icecastUrl,
-            mount: 'radiogibson.opus',
+            url: SERVER_HOST,
+            mount: 'lnfm.ogg',
             type: 'icecast'
         }).then(function (data) {
             console.log(data);
@@ -106,7 +123,7 @@ describe('StreamTitle', function () {
     it('get from icecast error without mount', function (done) {
         try {
             streamTitle({
-                url: icecastUrl,
+                url: SERVER_HOST,
                 type: 'icecast'
             }).then();
         } catch (e) {
