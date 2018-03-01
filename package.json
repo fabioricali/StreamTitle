@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "request": "^2.81.0",
-    "request-promise": "^4.2.1"
+    "request-promise": "^4.2.1",
+    "super-trailing-slash": "^1.0.1"
   }
 }

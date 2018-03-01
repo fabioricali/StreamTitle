@@ -76,7 +76,7 @@ describe('StreamTitle', function () {
     });
     it('without type', function (done) {
         try {
-            streamTitle({}).then();
+            streamTitle({url: ''}).then();
         } catch (e) {
             console.log(e.message);
             assert.equal('required type', e.message);
@@ -90,6 +90,22 @@ describe('StreamTitle', function () {
         }).then(function (data) {
             console.log(data);
             done();
+        }).catch(function (err) {
+            console.log(err);
+            done(err);
+        });
+    });
+
+    it('get from shoutcast v1, trailing slash', function (done) {
+        streamTitle({
+            url: 'http://onair22.streaming.xdevel.com:10008/',
+            type: 'shoutcast'
+        }).then(function (data) {
+            console.log(data);
+            if (data)
+                done();
+            else
+                done('no data');
         }).catch(function (err) {
             console.log(err);
             done(err);
