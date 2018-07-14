@@ -1,5 +1,6 @@
 const u = require('url');
 const rp = require('request-promise');
+const slash = require('super-trailing-slash');
 
 /**
  * Get song title from icecast v2.4
@@ -99,11 +100,16 @@ function getFromShoutcast(url, timeout) {
  */
 function streamTitle(args) {
 
+    if (typeof args.url === 'undefined')
+        throw new Error('required url');
+
     if (typeof args.type === 'undefined')
         throw new Error('required type');
 
     if (typeof args.timeout !== 'number')
         args.timeout = 1500;
+
+    args.url = slash.remove(args.url);
 
     switch (args.type) {
         case 'shoutcast2': {
