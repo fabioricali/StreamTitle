@@ -26,7 +26,9 @@ function getFromIcecast(url, mount, timeout) {
         let title = '';
         for (let i in data['icestats']['source']) {
             if (data['icestats']['source'].hasOwnProperty(i)) {
-                let urlObj = u.parse(data['icestats']['source'][i]['listenurl']);
+                const listenUrl = data['icestats']['source'][i]['listenurl'];
+                if (!listenUrl) continue;
+                let urlObj = u.parse(listenUrl);
                 if (urlObj.pathname.replace('/', '') === mount && data['icestats']['source'][i]['title']) {
                     title = data['icestats']['source'][i]['title'];
                     break;

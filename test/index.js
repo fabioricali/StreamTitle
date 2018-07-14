@@ -9,10 +9,19 @@ const StaticServer = require('static-server');
 const PATH_TEXTURE = __dirname + '/texture';
 const SERVER_HOST = 'http://localhost:1337';
 
+const PATH_TEXTURE_FAIL = __dirname + '/texture-fail';
+const SERVER_HOST_FAIL = 'http://localhost:1338';
+
 const server = new StaticServer({
     rootPath: PATH_TEXTURE,
     name: 'my-http-server',
     port: 1337
+});
+
+const server_fail = new StaticServer({
+    rootPath: PATH_TEXTURE_FAIL,
+    name: 'my-http-server',
+    port: 1338
 });
 
 const wrongUrl = 'http://rica.li';
@@ -21,12 +30,15 @@ describe('StreamTitle', function () {
 
     before(function (done) {
         server.start(function () {
-            done();
-        })
+            server_fail.start(function () {
+                done();
+            });
+        });
     });
 
     after(function () {
-        server.stop()
+        server.stop();
+        server_fail.stop();
     });
 
     it('get from shoutcast v2', function (done) {
@@ -142,5 +154,19 @@ describe('StreamTitle', function () {
             assert.equal('required url', e.message);
             done();
         }
+    });
+    it('get from icecast error without listenurl, should be empty data', function (done) {
+        streamTitle({
+            url: SERVER_HOST_FAIL,
+            mount: 'lnfm.ogg',
+            type: 'icecast'
+        }).then(function (data) {
+            console.log(data);
+            assert.equal(data, '');
+            done();
+        }).catch(function (err) {
+            console.log(err);
+            done(err);
+        });
     });
 });
