@@ -9,6 +9,9 @@ const StaticServer = require('static-server');
 const PATH_TEXTURE = __dirname + '/texture';
 const SERVER_HOST = 'http://localhost:1337';
 
+const PATH_TEXTURE_ICECAST_SINGLE = __dirname + '/texture/icecast-single-mount';
+const SERVER_HOST_ICECAST_SINGLE = 'http://localhost:1339';
+
 const PATH_TEXTURE_FAIL = __dirname + '/texture-fail';
 const SERVER_HOST_FAIL = 'http://localhost:1338';
 
@@ -24,6 +27,12 @@ const server_fail = new StaticServer({
     port: 1338
 });
 
+const server_icecast_single_mount = new StaticServer({
+    rootPath: PATH_TEXTURE_ICECAST_SINGLE,
+    name: 'my-http-server',
+    port: 1339
+});
+
 const wrongUrl = 'http://rica.li';
 
 describe('StreamTitle', function () {
@@ -31,7 +40,9 @@ describe('StreamTitle', function () {
     before(function (done) {
         server.start(function () {
             server_fail.start(function () {
-                done();
+                server_icecast_single_mount.start(function () {
+                    done();
+                });
             });
         });
     });
@@ -39,6 +50,7 @@ describe('StreamTitle', function () {
     after(function () {
         server.stop();
         server_fail.stop();
+        server_icecast_single_mount.stop();
     });
 
     it('get from shoutcast v2', function (done) {
@@ -141,8 +153,21 @@ describe('StreamTitle', function () {
             mount: 'lnfm.ogg',
             type: 'icecast'
         }).then(function (data) {
-            console.log(data);
-            done();
+            if(data === 'LNFM Stream')
+                done();
+        }).catch(function (err) {
+            console.log(err);
+            done(err);
+        });
+    });
+    it('get from icecast, single mount', function (done) {
+        streamTitle({
+            url: SERVER_HOST_ICECAST_SINGLE,
+            mount: 'lnfm.ogg',
+            type: 'icecast'
+        }).then(function (data) {
+            if(data === 'LNFM Stream')
+                done();
         }).catch(function (err) {
             console.log(err);
             done(err);

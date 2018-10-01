@@ -25,17 +25,25 @@ function getFromIcecast(url, mount, timeout) {
     }).then(function (body) {
         let data = JSON.parse(body);
         let title = '';
-        for (let i in data['icestats']['source']) {
-            if (data['icestats']['source'].hasOwnProperty(i)) {
-                const listenUrl = data['icestats']['source'][i]['listenurl'];
-                if (!listenUrl) continue;
-                let urlObj = u.parse(listenUrl);
-                if (urlObj.pathname.replace('/', '') === mount && data['icestats']['source'][i]['title']) {
-                    title = data['icestats']['source'][i]['title'];
-                    break;
+
+        if(Array.isArray(data['icestats']['source'])) {
+            for (let i in data['icestats']['source']) {
+                if (data['icestats']['source'].hasOwnProperty(i)) {
+
+                    const listenUrl = data['icestats']['source'][i]['listenurl'];
+                    if (!listenUrl) continue;
+                    let urlObj = u.parse(listenUrl);
+                    if (urlObj.pathname.replace('/', '') === mount && data['icestats']['source'][i]['title']) {
+                        title = data['icestats']['source'][i]['title'];
+                        break;
+                    }
                 }
             }
+        } else if (typeof data['icestats']['source'] === 'object') {
+            title = data['icestats']['source'].title
         }
+
+
         return title;
     });
 
